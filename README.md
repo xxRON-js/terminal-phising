@@ -1,6 +1,5 @@
 # terminal-phising 🕵️‍♀️ 🕵
-Terminal passwod steal
-can be injected with alias when su run in terminal it activate this script 
+terminal password stealing using fake sudo or any backdoored command you select (can be used by run a file also)
 
 ## use webhook.site for sending out the password as request value 
 this script also saved the password at /tmp/ file named with random and the linux username at the start $whoami
